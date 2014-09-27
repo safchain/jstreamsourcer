@@ -27,11 +27,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 public class ShoutcastV1 extends Sourcer {
   private String host = null;
@@ -180,10 +179,11 @@ public class ShoutcastV1 extends Sourcer {
       return;
     }
 
-    HttpClient httpClient = new DefaultHttpClient();
-    HttpParams httpParams = httpClient.getParams();
-    HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
-    HttpConnectionParams.setSoTimeout(httpParams, timeout);
+    RequestConfig requestConfig =
+        RequestConfig.custom().setSocketTimeout(timeout * 1000).setConnectTimeout(timeout * 1000)
+            .build();
+    HttpClient httpClient =
+        HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
 
     HttpUriRequest request = getUpdateMetadataRequest(song, artist, album);
 

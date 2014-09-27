@@ -1,14 +1,14 @@
 /*
  * Copyright (C) 2014 Sylvain Afchain
- *
+ * 
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
@@ -23,16 +23,16 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 public class Icecast extends Sourcer {
   private String host = null;
@@ -114,7 +114,7 @@ public class Icecast extends Sourcer {
   }
 
   private void writeHeaders(PrintWriter output) {
-    HashMap<String, String> headers = new HashMap<String, String>();
+    LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
     headers.put("User-Agent", USER_AGENT);
     headers.put("icy-notice1", USER_AGENT);
 
@@ -175,8 +175,8 @@ public class Icecast extends Sourcer {
     headers.put("User-Agent", USER_AGENT);
 
     HttpUriRequest request =
-        new HttpGet(MetaDataHttpRequestParams.getUrlWithQueryString(
-            "http://" + host + ":" + Integer.toString(port) + "/admin/metadata", params));
+        new HttpGet(MetaDataHttpRequestParams.getUrlWithQueryString("http://" + host + ":"
+            + Integer.toString(port) + "/admin/metadata", params));
     if (headers != null) {
       for (Map.Entry<String, String> entry : headers.entrySet()) {
         request.addHeader(entry.getKey(), entry.getValue());
@@ -192,10 +192,11 @@ public class Icecast extends Sourcer {
       return;
     }
 
-    HttpClient httpClient = new DefaultHttpClient();
-    HttpParams httpParams = httpClient.getParams();
-    HttpConnectionParams.setConnectionTimeout(httpParams, timeout);
-    HttpConnectionParams.setSoTimeout(httpParams, timeout);
+    RequestConfig requestConfig =
+        RequestConfig.custom().setSocketTimeout(timeout * 1000).setConnectTimeout(timeout * 1000)
+            .build();
+    HttpClient httpClient =
+        HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
 
     HttpUriRequest request = getUpdateMetadataRequest(song, artist, album);
 
