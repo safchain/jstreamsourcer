@@ -12,7 +12,9 @@ Examples
 Icecast
 
 ```java
-Icecast icecast = new Icecast(320, 5000);
+import com.supernovapps.audio.jstreamsourcer.Icecast;
+
+icecast icecast = new Icecast(320, 5000);
 icecast.setHost("localhost");
 icecast.setUsername("source");
 icecast.setPassword("password");
@@ -34,7 +36,9 @@ inputStream.close();
 Shoutcast v1
 
 ```java
-ShoutcastV1 shoutcast = new ShoutcastV1(128, 5000);
+import com.supernovapps.audio.jstreamsourcer.ShoutcastV1;
+
+shoutcastV1 shoutcast = new ShoutcastV1(128, 5000);
 shoutcast.setHost("localhost");
 shoutcast.setPassword("password");
 shoutcast.setPort(8001);
@@ -55,7 +59,9 @@ inputStream.close();
 Shoutcast v2
 
 ```java
-ShoutcastV2 shoutcast = new ShoutcastV2(320, 1000);
+import com.supernovapps.audio.jstreamsourcer.ShoutcastV2;
+
+shoutcastV2 shoutcast = new ShoutcastV2(320, 1000);
 shoutcast.setHost("localhost");
 shoutcast.setSid("1");
 shoutcast.setUid("1");
