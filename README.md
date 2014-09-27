@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/safchain/jstreamsourcer.png)](https://travis-ci.org/safchain/jstreamsourcer)
-[![Coverage Status](https://coveralls.io/repos/safchain/jstreamsourcer/badge.png)](https://coveralls.io/r/safchain/jstreamsourcer)
+[![Coverage Status](https://img.shields.io/coveralls/safchain/jstreamsourcer.svg)](https://coveralls.io/r/safchain/jstreamsourcer?branch=master)
 
 jstreamsourcer
 ==============
