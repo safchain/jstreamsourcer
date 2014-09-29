@@ -46,6 +46,13 @@ public abstract class Sourcer {
 
   protected LinkedHashMap<String, String> streamInfos;
 
+  /**
+   * Instantiates a new sourcer.
+   *
+   * @param kbps, used for the stream, ex: 128, 256, 320, etc.
+   * @param burst, number of seconds without any rate limiting. The packet will
+   * be sent as faster as possible. 
+   */
   public Sourcer(int kbps, int burst) {
     this.kbps = kbps;
 
@@ -63,10 +70,33 @@ public abstract class Sourcer {
   /*
    * abstract method
    */
+  /**
+   * Initiates a connection to the stream server
+   *
+   * @return true, if successfully connected
+   */
   public abstract boolean start();
+  
+  /**
+   * Checks if the streaming is started.
+   *
+   * @return true, if is started
+   */
   public abstract boolean isStarted();
+  
+  /**
+   * Stop the connection
+   *
+   * @return true, if successful
+   */
   public abstract boolean stop();
 
+  /**
+   * Writes data to the openened streaming connection
+   *
+   * @param data, buffer of data
+   * @param size, the size of the data buffer
+   */
   public void write(byte[] data, int size) {
     if (!started || size <= 0) {
       return;
@@ -85,24 +115,60 @@ public abstract class Sourcer {
     }
   }
 
+  /**
+   * Update metadata of the current streaming
+   *
+   * @param song, the song
+   * @param artist, the artist
+   * @param album, the album
+   */
   public abstract void updateMetadata(final String song, final String artist, final String album);
 
+  /**
+   * Sets the OnSourcerListener. This is used to get notification when there is modification
+   * of the current status of the streaming connection.
+   *
+   * @param l the new OnSourcerListener
+   */
   public final void setOnSourcerListener(OnSourcerListener l) {
     listener = l;
   }
 
+  /**
+   * Gets the timeout that is used for the connection.
+   *
+   * @return the timeout
+   */
   public int getTimeout() {
     return timeout;
   }
 
+  /**
+   * Sets the timeout that is used for the connection.
+   *
+   * @param timeout the new timeout
+   */
   public void setTimeout(int timeout) {
     this.timeout = timeout;
   }
 
+  /**
+   * Sets the stream info. Permits to specify informations related to the
+   * current streaming connection. Ex: url, genre, etc.
+   *
+   * @param key the key
+   * @param value the value
+   */
   public void setStreamInfo(String key, String value) {
     streamInfos.put(key, value);
   }
 
+  /**
+   * Gets the stream info.
+   *
+   * @param key the key
+   * @return the stream info
+   */
   public String getStreamInfo(String key) {
     return streamInfos.get(key);
   }
