@@ -6,6 +6,20 @@ jstreamsourcer
 
 Java sourcer library for Icecast, Shoutcast v1/v2 streaming servers.
 
+Install
+-------
+
+Maven
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.supernovapps.audio</groupId>
+        <artifactId>jstreamsourcerer</artifactId>
+        <version>0.1.3</version>
+    </dependency>
+</dependencies>
+```
+
 Examples
 --------
 
